@@ -369,6 +369,7 @@
       </div>
       <div class="topbar-actions">
         <button id="mobileFilterBtn" class="btn mobile-filter-btn">Bộ lọc</button>
+        <button id="customProductBtn" class="btn btn-accent">+ Đề xuất sản phẩm khác</button>
         <button id="shortlistBtn" class="btn">Đã lưu <span id="shortlistCount" class="badge-count">0</span></button>
       </div>
     </div>
@@ -443,9 +444,10 @@
       </div>
       <div id="modalBody"></div>
       <div class="modal-actions">
-        <button id="copyAndOpenForm" class="btn btn-primary">Copy thông tin &amp; Mở Microsoft Form</button>
-        <button id="copyOnlyBtn" class="btn">Chỉ Copy thông tin sản phẩm</button>
-        <a id="outlookBtn" class="btn btn-accent" href="#">Gửi lựa chọn qua Outlook cho IT</a>
+        <button id="copyAndOpenForm" class="btn btn-primary">Xác nhận mua và gửi qua form.</button>
+        <button id="copyOnlyBtn" class="btn">Chỉ copy thông tin sản phẩm. Chưa mua ngay</button>
+        <a id="outlookBtn" class="btn btn-accent" href="#">Gửi email cho IT. Chưa mua ngay</a>
+        <button id="saveFromModalBtn" class="btn">Đưa vào mục đã lưu. Chưa mua ngay</button>
       </div>
       <p style="font-size:12px;color:var(--text-muted);margin:10px 0 0;">
         Mẹo: Sau khi bấm mở Microsoft Form, bạn chỉ cần dán (<strong>Ctrl+V</strong>) vào ô Sản phẩm đã chọn, nhập Họ tên &amp; Mã NV rồi bấm Gửi.
@@ -453,11 +455,41 @@
     </div>
   </div>
 
-  <!-- Modal Danh sách đã lưu -->
+  <!-- Modal Đề xuất sản phẩm ngoài danh mục -->
+  <div id="customModal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Đề xuất sản phẩm ngoài danh mục</h3>
+        <button id="closeCustomModal" class="close-btn">&times;</button>
+      </div>
+      <p style="font-size:13px;color:var(--text-muted);margin-top:0;">
+        Dùng khi sản phẩm bạn muốn chọn không có trong danh sách (mua ở đơn vị khác).
+      </p>
+      <div class="filter-group" style="margin-top:0;padding-top:0;border-top:none;">
+        <label for="customName">Tên sản phẩm *</label>
+        <input id="customName" type="text" placeholder="Ví dụ: Chuột Logitech MX Master 3S..." style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;" />
+      </div>
+      <div class="filter-group" style="border-top:none;padding-top:4px;">
+        <label for="customPrice">Giá tham khảo (VND)</label>
+        <input id="customPrice" type="number" min="0" step="1000" placeholder="Ví dụ: 2490000" />
+      </div>
+      <div class="filter-group" style="border-top:none;padding-top:4px;">
+        <label for="customUrl">Link nơi bán / Nhà cung cấp</label>
+        <input id="customUrl" type="text" placeholder="https://..." style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;" />
+      </div>
+      <div class="modal-actions">
+        <button id="customSubmitForm" class="btn btn-primary">Xác nhận mua và gửi qua form.</button>
+        <button id="customCopyOnly" class="btn">Chỉ copy thông tin sản phẩm. Chưa mua ngay</button>
+        <a id="customOutlook" class="btn btn-accent" href="#">Gửi email cho IT. Chưa mua ngay</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Sản phẩm đã lưu -->
   <div id="shortlistModal" class="modal-backdrop">
     <div class="modal">
       <div class="modal-header">
-        <h3>Danh sách sản phẩm đã lưu</h3>
+        <h3>Sản phẩm đã lưu</h3>
         <button id="closeShortlistModal" class="close-btn">&times;</button>
       </div>
       <div id="shortlistBody"></div>
@@ -497,6 +529,11 @@
 
       const fmtVND = (n) => (n > 0 ? Number(n).toLocaleString("vi-VN") + "đ" : "Liên hệ");
 
+      const safeStorage = {
+        get: (k, fb) => { try { return localStorage.getItem(k) ?? fb; } catch (e) { return fb; } },
+        set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} },
+      };
+
       let state = {
         query: "",
         category: "ALL",
@@ -507,7 +544,7 @@
         sort: "default",
         view: "grid",
         limit: 60,
-        shortlist: JSON.parse(localStorage.getItem("cps_shortlist") || "[]"),
+        shortlist: JSON.parse(safeStorage.get("cps_shortlist", "[]")),
       };
 
       const el = {
@@ -612,6 +649,18 @@
         const subject = encodeURIComponent(`[Đăng ký quà công nghệ] ${p.name} (ID: ${p.id})`);
         const body = encodeURIComponent(`Kính gửi bộ phận IT,\n\nTôi đăng ký chọn sản phẩm quà công nghệ sau:\n- Product ID: ${p.id}\n- SKU: ${p.sku}\n- Tên sản phẩm: ${p.name}\n- Giá bán tham khảo: ${fmtVND(p.salePrice)}\n- Link: ${p.url}\n\nHọ và tên:\nMã nhân viên:\nPhòng ban:\n`);
         document.getElementById("outlookBtn").href = `mailto:${cfg.itEmail || ""}?subject=${subject}&body=${body}`;
+        document.getElementById("saveFromModalBtn").onclick = () => {
+          if (!state.shortlist.includes(p.id)) {
+            state.shortlist.push(p.id);
+            safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
+            updateShortlistBadge();
+            render();
+            showToast("Đã đưa vào mục đã lưu!");
+          } else {
+            showToast("Sản phẩm đã có trong mục đã lưu!");
+          }
+          document.getElementById("selectModal").classList.remove("open");
+        };
         document.getElementById("selectModal").classList.add("open");
       }
 
@@ -619,7 +668,7 @@
         const idx = state.shortlist.indexOf(id);
         if (idx >= 0) state.shortlist.splice(idx, 1);
         else state.shortlist.push(id);
-        localStorage.setItem("cps_shortlist", JSON.stringify(state.shortlist));
+        safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
         updateShortlistBadge();
         render();
       }
@@ -661,7 +710,7 @@
                     <a class="btn" href="${p.url}" target="_blank" rel="noopener">Xem chi tiết</a>
                     <button class="btn btn-primary" data-pick="${p.id}">Chọn quà này</button>
                   </div>
-                  <button class="btn" style="width:100%;margin-top:6px;padding:5px;font-size:11px;" data-save="${p.id}">${saved ? "✓ Đã lưu so sánh" : "+ Lưu so sánh"}</button>
+                  <button class="btn" style="width:100%;margin-top:6px;padding:5px;font-size:11px;" data-save="${p.id}">${saved ? "✓ Đã lưu" : "+ Lưu sản phẩm"}</button>
                 </div>
               </article>
             `;
@@ -753,11 +802,52 @@
       document.getElementById("closeSidebar").onclick = () => el.sidebar.classList.remove("open");
       document.getElementById("closeSelectModal").onclick = () => document.getElementById("selectModal").classList.remove("open");
       document.getElementById("closeShortlistModal").onclick = () => document.getElementById("shortlistModal").classList.remove("open");
+      document.getElementById("customProductBtn").onclick = () => document.getElementById("customModal").classList.add("open");
+      document.getElementById("closeCustomModal").onclick = () => document.getElementById("customModal").classList.remove("open");
+
+      function buildCustomPayload() {
+        const name = document.getElementById("customName").value.trim();
+        if (!name) {
+          showToast("Vui lòng nhập Tên sản phẩm!");
+          return null;
+        }
+        const priceNum = Number(document.getElementById("customPrice").value || 0);
+        const priceStr = priceNum > 0 ? Number(priceNum).toLocaleString("vi-VN") + "đ" : "Theo báo giá";
+        const url = document.getElementById("customUrl").value.trim() || "Mua ngoài danh mục";
+        return {
+          name,
+          priceStr,
+          url,
+          copyText: `[ID: NGOAI-DM] | SKU: KHAC | ${name} | Giá: ${priceStr} | ${url}`,
+        };
+      }
+
+      document.getElementById("customSubmitForm").onclick = async () => {
+        const d = buildCustomPayload();
+        if (!d) return;
+        try { await navigator.clipboard.writeText(d.copyText); } catch (e) {}
+        showToast("Đã copy đề xuất! Hãy dán (Ctrl+V) vào Microsoft Form.");
+        window.open(cfg.msFormUrl || "https://forms.office.com/", "_blank", "noopener");
+      };
+      document.getElementById("customCopyOnly").onclick = async () => {
+        const d = buildCustomPayload();
+        if (!d) return;
+        try { await navigator.clipboard.writeText(d.copyText); showToast("Đã copy thông tin sản phẩm!"); }
+        catch (e) { showToast("Không thể tự copy, hãy thử lại."); }
+      };
+      document.getElementById("customOutlook").onclick = (e) => {
+        const d = buildCustomPayload();
+        if (!d) { e.preventDefault(); return; }
+        const subject = encodeURIComponent(`[Đề xuất quà ngoài danh mục] ${d.name}`);
+        const body = encodeURIComponent(`Kính gửi bộ phận IT,\n\nTôi đề xuất chọn sản phẩm ngoài danh mục sau:\n- Tên sản phẩm: ${d.name}\n- Giá tham khảo: ${d.priceStr}\n- Link nơi bán: ${d.url}\n\nHọ và tên:\nMã nhân viên:\nPhòng ban:\n`);
+        e.currentTarget.href = `mailto:${cfg.itEmail || ""}?subject=${subject}&body=${body}`;
+      };
+
       document.getElementById("shortlistBtn").onclick = () => {
         const saved = products.filter((p) => state.shortlist.includes(p.id));
         const body = document.getElementById("shortlistBody");
         if (saved.length === 0) {
-          body.innerHTML = "<p>Bạn chưa lưu sản phẩm nào để so sánh.</p>";
+          body.innerHTML = "<p>Bạn chưa lưu sản phẩm nào.</p>";
         } else {
           body.innerHTML = saved.map((p) => `
             <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);">
