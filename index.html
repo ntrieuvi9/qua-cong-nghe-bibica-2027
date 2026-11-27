@@ -119,6 +119,75 @@
       font-weight: 700;
     }
 
+    .letter-paper {
+      background: linear-gradient(180deg, #fffdf9 0%, #fff8f0 100%);
+      border: 2px solid #f5d0a9;
+      border-radius: 14px;
+      padding: 24px 22px;
+      position: relative;
+      box-shadow: inset 0 0 0 4px #fff, 0 12px 30px rgba(215, 0, 24, 0.12);
+    }
+    .letter-seal {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d70018, #f97316);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(215, 0, 24, 0.28);
+    }
+    .letter-greeting {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 21px;
+      font-weight: 700;
+      color: #9a3412;
+      margin: 0 0 12px;
+      text-align: center;
+    }
+    .letter-content {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      line-height: 1.75;
+      color: #334155;
+      text-align: left;
+    }
+    .letter-sign {
+      margin-top: 14px;
+      text-align: right;
+      font-style: italic;
+      font-weight: 600;
+      color: #9a3412;
+    }
+    .arrow-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 18px;
+      font-size: 14px;
+      border-radius: 999px;
+    }
+    .arrow-cta .arrow-icon {
+      display: inline-block;
+      transition: transform .2s ease;
+      font-size: 17px;
+    }
+    .arrow-cta:hover .arrow-icon { transform: translateX(5px); }
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 150;
+      display: none;
+    }
+
     .notice-banner {
       max-width: 1400px;
       margin: 14px auto 0;
@@ -375,7 +444,76 @@
     .mobile-filter-btn { display: none; }
 
     @media (max-width: 900px) {
-      .notice-banner {
+      .letter-paper {
+      background: linear-gradient(180deg, #fffdf9 0%, #fff8f0 100%);
+      border: 2px solid #f5d0a9;
+      border-radius: 14px;
+      padding: 24px 22px;
+      position: relative;
+      box-shadow: inset 0 0 0 4px #fff, 0 12px 30px rgba(215, 0, 24, 0.12);
+    }
+    .letter-seal {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d70018, #f97316);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(215, 0, 24, 0.28);
+    }
+    .letter-greeting {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 21px;
+      font-weight: 700;
+      color: #9a3412;
+      margin: 0 0 12px;
+      text-align: center;
+    }
+    .letter-content {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      line-height: 1.75;
+      color: #334155;
+      text-align: left;
+    }
+    .letter-sign {
+      margin-top: 14px;
+      text-align: right;
+      font-style: italic;
+      font-weight: 600;
+      color: #9a3412;
+    }
+    .arrow-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 18px;
+      font-size: 14px;
+      border-radius: 999px;
+    }
+    .arrow-cta .arrow-icon {
+      display: inline-block;
+      transition: transform .2s ease;
+      font-size: 17px;
+    }
+    .arrow-cta:hover .arrow-icon { transform: translateX(5px); }
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 150;
+      display: none;
+    }
+
+    .notice-banner {
       max-width: 1400px;
       margin: 14px auto 0;
       padding: 0 20px;
@@ -446,32 +584,32 @@
   <section class="notice-banner">
     <div class="notice-card">
       <div class="notice-header">
-        <span>Lưu ý quan trọng &amp; Hướng dẫn chọn quà công nghệ</span>
+        <span>Gợi ý nhỏ &amp; Hướng dẫn chọn quà công nghệ</span>
         <button id="toggleNoticeBtn" class="btn" style="padding:4px 10px;font-size:12px;">Thu gọn</button>
       </div>
       <div id="noticeBody" class="notice-grid">
         <div class="notice-block">
-          <strong>1. Lưu ý về giá &amp; Nhà cung cấp:</strong>
+          <strong>1. Về giá tham khảo &amp; Nhà cung cấp:</strong>
           <ul>
-            <li>Giá hiển thị chỉ là <strong>giá tham khảo</strong> tại thời điểm đang xem (nguồn tham khảo: <strong>CellphoneS</strong>).</li>
-            <li>Bộ phận IT sẽ tham khảo giá ở <strong>nhiều nhà cung cấp</strong> để có mức giá tối ưu nhất cho CBNV sau khi thống nhất sản phẩm.</li>
+            <li>Giá hiển thị là <strong>giá tham khảo tại thời điểm bạn xem</strong> (nguồn: <strong>CellphoneS</strong>).</li>
+            <li>Sau khi mọi người chốt món, IT sẽ khảo giá thêm ở <strong>nhiều nhà cung cấp</strong> để mang lại mức giá tốt nhất cho bạn.</li>
           </ul>
         </div>
         <div class="notice-block">
-          <strong>2. CBNV vui lòng đọc kỹ:</strong>
+          <strong>2. Vài mẹo nhỏ khi chọn quà:</strong>
           <ul>
-            <li>Bấm <strong>"Xem chi tiết"</strong> để kiểm tra kỹ cấu hình, kích thước, màu sắc trước khi chọn.</li>
-            <li>CBNV có thể chọn <strong>nhiều sản phẩm</strong>: chỉnh <strong>Số lượng</strong> nếu mua nhiều cái giống nhau, hoặc bấm <strong>"+ Lưu sản phẩm"</strong> cho nhiều món khác nhau rồi vào mục <strong>Đã lưu</strong> để gửi chung 1 lần Form.</li>
-            <li>Nếu món muốn chọn không có trong danh sách, bấm <strong>"+ Đề xuất sản phẩm khác"</strong>.</li>
+            <li>Bạn có thể bấm <strong>"Xem chi tiết"</strong> để xem ảnh và cấu hình cụ thể của sản phẩm.</li>
+            <li>Thoải mái chọn <strong>nhiều sản phẩm</strong>: chỉnh <strong>Số lượng</strong> nếu muốn nhiều cái giống nhau, hoặc bấm <strong>"+ Lưu sản phẩm"</strong> cho nhiều món khác nhau rồi vào mục <strong>Đã lưu</strong> gửi chung 1 lần Form nhé.</li>
+            <li>Nếu chưa thấy món ưng ý, bạn bấm <strong>"+ Đề xuất sản phẩm khác"</strong> để gợi ý thêm cho IT nha.</li>
           </ul>
         </div>
         <div class="notice-block">
-          <strong>3. Hướng dẫn sử dụng nhanh:</strong>
+          <strong>3. Cách chọn &amp; gửi cực nhanh:</strong>
           <ol>
             <li>Gõ tên/hãng (không cần dấu) hoặc lọc theo <strong>Danh mục / Khoảng giá</strong>.</li>
             <li>Chọn 1 món: bấm <strong>"Chọn quà này"</strong> &rarr; chỉnh số lượng &rarr; bấm <strong>"Xác nhận mua và gửi qua form."</strong>.</li>
-            <li>Chọn nhiều món khác nhau: bấm <strong>"+ Lưu sản phẩm"</strong> cho từng món &rarr; mở mục <strong>Đã lưu</strong> &rarr; bấm <strong>"Xác nhận gửi TẤT CẢ qua Form"</strong> &rarr; Dán (<strong>Ctrl+V</strong>) vào Form, điền thông tin cá nhân và Gửi.</li>
-            <li><strong>Gửi qua Email cho IT:</strong> Nội dung email được hệ thống tự soạn sẵn, bạn chỉ cần điền thông tin cá nhân. <em>(Chỉ nên dùng khi sản phẩm không có trong danh sách mong muốn hoặc đang dùng điện thoại).</em></li>
+            <li>Chọn nhiều món khác nhau: bấm <strong>"+ Lưu sản phẩm"</strong> &rarr; mở mục <strong>Đã lưu</strong> &rarr; bấm <strong>"Xác nhận gửi TẤT CẢ qua Form"</strong> &rarr; Dán (<strong>Ctrl+V</strong>) vào Form, điền thông tin cá nhân và Gửi.</li>
+            <li><strong>Gửi qua Email cho IT:</strong> Nội dung email đã được soạn sẵn tự động, bạn chỉ cần điền thông tin cá nhân. <em>(Gợi ý: bạn chỉ nên dùng Email khi món muốn chọn chưa có trong danh sách hoặc đang dùng điện thoại nhé).</em></li>
           </ol>
         </div>
       </div>
@@ -605,49 +743,58 @@
     </div>
   </div>
 
+  <canvas id="confettiCanvas"></canvas>
+
   <!-- Modal Lá thư chúc mừng -->
   <div id="letterModal" class="modal-backdrop">
-    <div class="modal" style="max-width:560px;border-top:5px solid var(--primary);text-align:center;">
-      <div style="font-size:40px;line-height:1;margin-bottom:8px;">&#9993;&#65039;</div>
-      <h3 style="margin:0 0 10px;font-size:20px;color:var(--primary);">Thư Chúc Mừng Từ Công Ty</h3>
-      <div class="summary-box" style="text-align:left;background:#fff8f6;border-color:#fecaca;color:#1e293b;line-height:1.7;font-size:14px;">
-        <p style="margin:0 0 8px;"><strong>Chúc mừng bạn đã nhận được phần quà công nghệ tri ân từ Công ty!</strong></p>
-        <p style="margin:0 0 8px;">Nhằm ghi nhận những nỗ lực, đóng góp và sự đồng hành quý báu của bạn trong thời gian qua, Công ty đã chuẩn bị chương trình quà tặng công nghệ để bạn tự do lựa chọn sản phẩm phù hợp nhất với nhu cầu cá nhân và công việc.</p>
-        <p style="margin:0;">Chúc bạn thật nhiều sức khỏe, niềm vui và tiếp tục gặt hái nhiều thành công mới cùng Công ty!</p>
-      </div>
-      <div class="modal-actions">
-        <button id="openLetterBtn" class="btn btn-primary">Mở thư &amp; Xem hướng dẫn chọn quà</button>
+    <div class="modal" style="max-width:580px;padding:14px;background:transparent;box-shadow:none;">
+      <div class="letter-paper">
+        <div class="letter-seal">&#127873;</div>
+        <h3 class="letter-greeting">Thư Chúc Mừng Từ Công Ty</h3>
+        <div class="letter-content">
+          <p style="margin:0 0 10px;">Thân gửi bạn,</p>
+          <p style="margin:0 0 10px;"><strong>Chúc mừng bạn đã nhận được phần quà công nghệ tri ân từ Công ty!</strong></p>
+          <p style="margin:0 0 10px;">Cảm ơn bạn thật nhiều vì những nỗ lực, tâm huyết và sự đồng hành tuyệt vời trong suốt thời gian qua. Công ty đã chuẩn bị danh mục quà tặng công nghệ đa dạng để bạn tự do lựa chọn những sản phẩm mình yêu thích và hữu ích nhất cho công việc lẫn cuộc sống.</p>
+          <p style="margin:0;">Chúc bạn luôn dồi dào sức khỏe, thật nhiều niềm vui và gặt hái thêm nhiều thành công rực rỡ nhé!</p>
+          <div class="letter-sign">Thân mến,<br />Công ty &amp; Bộ phận IT</div>
+        </div>
+        <div class="modal-actions" style="margin-top:18px;">
+          <button id="openLetterBtn" class="btn btn-primary arrow-cta">
+            <span>Mời bạn xem hướng dẫn chọn quà</span>
+            <span class="arrow-icon">&rarr;</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal Hướng dẫn bắt buộc -->
+  <!-- Modal Hướng dẫn thân thiện -->
   <div id="guideModal" class="modal-backdrop">
     <div class="modal" style="max-width:640px;">
       <div class="modal-header">
-        <h3>Hướng dẫn &amp; Lưu ý quan trọng trước khi chọn quà</h3>
+        <h3>Gợi ý nhỏ giúp bạn chọn quà thật dễ dàng</h3>
         <button id="closeGuideModal" class="close-btn">&times;</button>
       </div>
       <div class="summary-box" style="background:#fffbeb;border-color:#fde68a;color:#78350f;">
-        <strong>Lưu ý về giá:</strong> Giá hiển thị trên trang chỉ là <strong>giá tham khảo tại thời điểm đang xem</strong> (nguồn tham khảo: <strong>CellphoneS</strong>). Sau khi CBNV thống nhất sản phẩm, bộ phận IT sẽ tham khảo giá tại <strong>nhiều nhà cung cấp</strong> để có mức giá tối ưu nhất cho CBNV.
+        <strong>Về giá hiển thị:</strong> Đây là <strong>giá tham khảo tại thời điểm bạn đang xem</strong> (nguồn: <strong>CellphoneS</strong>). Sau khi mọi người chốt món, IT sẽ khảo giá thêm ở <strong>nhiều nhà cung cấp</strong> để mang lại mức giá tối ưu nhất cho bạn nhé!
       </div>
-      <div style="font-size:13px;line-height:1.6;">
-        <p style="margin:8px 0 4px;"><strong>CBNV vui lòng đọc kỹ các lưu ý sau:</strong></p>
+      <div style="font-size:13px;line-height:1.65;">
+        <p style="margin:8px 0 4px;"><strong>Vài mẹo nhỏ trước khi bạn bắt đầu:</strong></p>
         <ul style="margin:0 0 10px;padding-left:18px;">
-          <li>Kiểm tra kỹ thông số kỹ thuật, dung lượng, màu sắc qua nút <strong>"Xem chi tiết"</strong> trước khi chốt lựa chọn.</li>
-          <li>CBNV có thể chọn <strong>nhiều sản phẩm</strong>: chỉnh ô <strong>Số lượng</strong> nếu muốn nhiều cái giống nhau, hoặc lưu nhiều món khác nhau vào mục <strong>Đã lưu</strong> để gửi chung trong <strong>01 lần Form</strong>.</li>
-          <li>Nếu sản phẩm mong muốn không có trong danh mục, sử dụng nút <strong>"+ Đề xuất sản phẩm khác"</strong> ở góc trên bên phải.</li>
+          <li>Bạn có thể bấm <strong>"Xem chi tiết"</strong> để xem hình ảnh, dung lượng, màu sắc cho chắc chắn nha.</li>
+          <li>Bạn được chọn <strong>nhiều sản phẩm</strong> thoải mái: chỉnh ô <strong>Số lượng</strong> nếu muốn nhiều cái giống nhau, hoặc bấm <strong>"+ Lưu sản phẩm"</strong> cho nhiều món khác nhau rồi vào mục <strong>Đã lưu</strong> gửi chung trong <strong>1 lần Form</strong>.</li>
+          <li>Nếu chưa thấy món mình thích trong danh mục, đừng ngại bấm nút <strong>"+ Đề xuất sản phẩm khác"</strong> ở góc trên bên phải để gợi ý thêm cho IT nhé!</li>
         </ul>
-        <p style="margin:8px 0 4px;"><strong>Hướng dẫn sử dụng:</strong></p>
+        <p style="margin:8px 0 4px;"><strong>Cách chọn &amp; gửi chỉ trong vài bước:</strong></p>
         <ol style="margin:0;padding-left:18px;">
-          <li>Tìm kiếm theo tên/hãng (hỗ trợ gõ không dấu) hoặc lọc theo <strong>Danh mục</strong>, <strong>Thương hiệu</strong>, <strong>Khoảng giá</strong>.</li>
-          <li><strong>Chọn 1 món:</strong> Bấm <strong>"Chọn quà này"</strong> &rarr; chỉnh Số lượng &rarr; bấm <strong>"Xác nhận mua và gửi qua form."</strong> &rarr; dán (<strong>Ctrl+V</strong>) vào Form và Gửi.</li>
-          <li><strong>Chọn nhiều món khác nhau:</strong> Bấm <strong>"+ Lưu sản phẩm"</strong> cho từng món &rarr; mở mục <strong>Đã lưu</strong> (góc trên bên phải) &rarr; chỉnh số lượng từng món và bấm <strong>"Xác nhận gửi TẤT CẢ qua Form"</strong>.</li>
-          <li><strong>Gửi qua Email cho IT:</strong> Phần nội dung email đã được hệ thống tự soạn sẵn, bạn chỉ cần điền thêm thông tin cá nhân (Họ tên, Mã NV, Phòng ban). <em>Lưu ý: Chỉ nên dùng cách gửi email nếu sản phẩm không có trong danh sách mong muốn hoặc bạn đang thao tác trên điện thoại.</em></li>
+          <li>Tìm theo tên/hãng (gõ không dấu cũng ra ngay) hoặc lọc theo <strong>Danh mục</strong>, <strong>Thương hiệu</strong>, <strong>Khoảng giá</strong>.</li>
+          <li><strong>Nếu chọn 1 món:</strong> Bấm <strong>"Chọn quà này"</strong> &rarr; chỉnh Số lượng &rarr; bấm <strong>"Xác nhận mua và gửi qua form."</strong> &rarr; dán (<strong>Ctrl+V</strong>) vào Form và Gửi.</li>
+          <li><strong>Nếu chọn nhiều món khác nhau:</strong> Bấm <strong>"+ Lưu sản phẩm"</strong> cho từng món &rarr; mở mục <strong>Đã lưu</strong> (góc trên bên phải) &rarr; chỉnh số lượng và bấm <strong>"Xác nhận gửi TẤT CẢ qua Form"</strong>.</li>
+          <li><strong>Gửi qua Email cho IT:</strong> Nội dung email đã được hệ thống soạn sẵn giúp bạn, bạn chỉ cần điền thêm thông tin cá nhân (Họ tên, Mã NV, Phòng ban). <em>Mẹo nhỏ: bạn chỉ nên dùng Email nếu món muốn chọn chưa có trong danh sách hoặc đang thao tác trên điện thoại nhé!</em></li>
         </ol>
       </div>
       <div class="modal-actions">
-        <button id="ackGuideBtn" class="btn btn-primary">Tôi đã đọc &amp; Bắt đầu chọn quà</button>
+        <button id="ackGuideBtn" class="btn btn-primary">Bắt đầu chọn quà ngay thôi!</button>
       </div>
     </div>
   </div>
@@ -1143,13 +1290,58 @@
         set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) {} },
       };
 
-      document.getElementById("letterBtn").onclick = () => document.getElementById("letterModal").classList.add("open");
+      function launchConfetti() {
+        const canvas = document.getElementById("confettiCanvas");
+        if (!canvas || !canvas.getContext) return;
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvas.style.display = "block";
+        const colors = ["#d70018", "#f59e0b", "#10b981", "#2563eb", "#ec4899", "#8b5cf6"];
+        const pieces = Array.from({ length: 110 }, () => ({
+          x: Math.random() * canvas.width,
+          y: -20 - Math.random() * 200,
+          w: 7 + Math.random() * 6,
+          h: 5 + Math.random() * 5,
+          vx: (Math.random() - 0.5) * 4,
+          vy: 3 + Math.random() * 4.5,
+          rot: Math.random() * Math.PI * 2,
+          vr: (Math.random() - 0.5) * 0.2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        }));
+        let frame = 0;
+        function tick() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          pieces.forEach((p) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.06;
+            p.rot += p.vr;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+          });
+          frame++;
+          if (frame < 160) requestAnimationFrame(tick);
+          else canvas.style.display = "none";
+        }
+        requestAnimationFrame(tick);
+      }
+
+      function openLetterModal() {
+        document.getElementById("letterModal").classList.add("open");
+        launchConfetti();
+      }
+
+      document.getElementById("letterBtn").onclick = openLetterModal;
       document.getElementById("openLetterBtn").onclick = () => {
         safeSession.set("cps_letter_seen", "1");
         document.getElementById("letterModal").classList.remove("open");
-        if (!safeSession.get("cps_guide_seen", "")) {
-          document.getElementById("guideModal").classList.add("open");
-        }
+        document.getElementById("confettiCanvas").style.display = "none";
+        document.getElementById("guideModal").classList.add("open");
       };
 
       document.getElementById("guideBtn").onclick = () => document.getElementById("guideModal").classList.add("open");
@@ -1167,7 +1359,7 @@
       };
 
       if (!safeSession.get("cps_letter_seen", "")) {
-        document.getElementById("letterModal").classList.add("open");
+        openLetterModal();
       } else if (!safeSession.get("cps_guide_seen", "")) {
         document.getElementById("guideModal").classList.add("open");
       }
