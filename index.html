@@ -605,14 +605,13 @@
         order: 4;
         width: 100%;
         display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        padding-bottom: 2px;
+        flex-wrap: wrap;
+        gap: 6px;
+        overflow-x: visible;
+        padding-bottom: 0;
       }
-      .topbar-actions::-webkit-scrollbar { display: none; }
-      .topbar-actions .btn { flex: 0 0 auto; padding: 8px 12px; font-size: 12.5px; min-height: 38px; }
+      .topbar-actions .btn { flex: 1 1 auto; padding: 8px 10px; font-size: 12.5px; min-height: 38px; white-space: nowrap; }
+      #shortlistBtn { background: var(--primary-soft); border-color: #fecaca; color: var(--primary); }
 
       .notice-banner { margin: 10px auto 0; padding: 0 12px; }
       .notice-card { padding: 10px 14px; }
