@@ -629,7 +629,10 @@
           Hướng dẫn
         </button>
         <button id="customProductBtn" class="btn btn-accent">+ Đề xuất sản phẩm khác</button>
-        <button id="shortlistBtn" class="btn">Đã lưu <span id="shortlistCount" class="badge-count">0</span></button>
+        <button id="shortlistBtn" class="btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          Giỏ hàng <span id="shortlistCount" class="badge-count">0</span>
+        </button>
       </div>
     </div>
   </header>
@@ -657,14 +660,14 @@
             </div>
             <div style="background:#ffffff;border:1px solid #fde68a;border-radius:8px;padding:6px 10px;">
               <strong>Nếu mua 2 – NHIỀU MÓN KHÁC NHAU:</strong><br />
-              Bấm <strong>"+ Lưu sản phẩm"</strong> ở từng món &rarr; mở mục <strong>Đã lưu</strong> (góc trên phải) &rarr; bấm <strong>"Xác nhận gửi TẤT CẢ qua Form"</strong> &rarr; Dán (<strong>Ctrl+V</strong>) 1 lần vào Form và Gửi.
+              Bấm <strong>"+ Thêm vào giỏ"</strong> ở từng món &rarr; mở <strong>Giỏ hàng</strong> (góc trên phải) &rarr; bấm <strong>"Xác nhận gửi TẤT CẢ qua Form"</strong> &rarr; Dán (<strong>Ctrl+V</strong>) 1 lần vào Form và Gửi.
             </div>
           </div>
         </div>
         <div class="notice-block">
           <strong>3. Mẹo nhỏ thêm cho bạn:</strong>
           <ul>
-            <li>Gõ tìm kiếm <strong>không cần dấu</strong> hoặc lọc theo Danh mục / Giá bên trái; bấm <strong>"Xem chi tiết"</strong> để xem ảnh &amp; thông số.</li>
+            <li>Gõ tìm kiếm <strong>không cần dấu</strong> hoặc lọc theo Danh mục / Giá bên trái; bấm <strong>"Xem chi tiết"</strong> xem thông số hoặc <strong>"Video Review"</strong> để xem đánh giá trên YouTube.</li>
             <li>Chưa thấy món ưng ý? Bấm <strong>"+ Đề xuất sản phẩm khác"</strong> ở góc trên.</li>
             <li><strong>Gửi qua Email cho IT:</strong> Nội dung email đã soạn sẵn, chỉ cần điền thông tin cá nhân <em>(nên dùng khi món ngoài danh sách hoặc đang dùng điện thoại)</em>.</li>
           </ul>
@@ -716,11 +719,11 @@
         <div class="result-info">Hiển thị <strong id="resultCount">0</strong> sản phẩm</div>
         <div class="toolbar-right">
           <select id="sortSelect">
-            <option value="default">Sắp xếp: Mặc định</option>
+            <option value="price_desc" selected>Sắp xếp: Giá Cao đến Thấp</option>
             <option value="price_asc">Giá: Thấp đến Cao</option>
-            <option value="price_desc">Giá: Cao đến Thấp</option>
             <option value="discount_desc">Giảm giá nhiều nhất</option>
             <option value="name_asc">Tên: A - Z</option>
+            <option value="default">Mặc định</option>
           </select>
           <button id="viewToggle" class="btn" title="Đổi kiểu hiển thị">Dạng bảng</button>
         </div>
@@ -745,7 +748,7 @@
         <button id="copyAndOpenForm" class="btn btn-primary">Xác nhận mua và gửi qua form.</button>
         <button id="copyOnlyBtn" class="btn">Chỉ copy thông tin sản phẩm. Chưa mua ngay</button>
         <a id="outlookBtn" class="btn btn-accent" href="#">Gửi email cho IT. Chưa mua ngay</a>
-        <button id="saveFromModalBtn" class="btn">Đưa vào mục đã lưu. Chưa mua ngay</button>
+        <button id="saveFromModalBtn" class="btn">Đưa vào giỏ hàng. Chưa mua ngay</button>
       </div>
       <p style="font-size:12px;color:var(--text-muted);margin:10px 0 0;">
         Mẹo: Sau khi bấm mở Microsoft Form, bạn chỉ cần dán (<strong>Ctrl+V</strong>) vào ô Sản phẩm đã chọn, nhập Họ tên &amp; Mã NV rồi bấm Gửi.
@@ -795,11 +798,11 @@
     </div>
   </div>
 
-  <!-- Modal Sản phẩm đã lưu -->
+  <!-- Modal Giỏ hàng -->
   <div id="shortlistModal" class="modal-backdrop">
     <div class="modal">
       <div class="modal-header">
-        <h3>Sản phẩm đã lưu</h3>
+        <h3>Giỏ hàng của bạn</h3>
         <button id="closeShortlistModal" class="close-btn">&times;</button>
       </div>
       <div id="shortlistBody"></div>
@@ -860,14 +863,14 @@
             <div style="font-weight:700;color:var(--accent);margin-bottom:6px;font-size:14px;">Cách 2: Nếu mua 2 – NHIỀU MÓN</div>
             <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">(Nhiều sản phẩm khác nhau, chỉ gửi 1 Form)</div>
             <ol style="margin:0;padding-left:18px;">
-              <li>Ở mỗi món thích, bấm <strong>"+ Lưu sản phẩm"</strong>.</li>
-              <li>Bấm mục <strong>Đã lưu</strong> (góc trên bên phải) để chỉnh Màu sắc, Số lượng từng món.</li>
+              <li>Ở mỗi món thích, bấm <strong>"+ Thêm vào giỏ"</strong>.</li>
+              <li>Bấm nút <strong>Giỏ hàng</strong> (góc trên bên phải) để chỉnh Màu sắc, Số lượng từng món.</li>
               <li>Bấm <strong>"Xác nhận gửi TẤT CẢ qua Form"</strong> &rarr; Dán (<strong>Ctrl+V</strong>) 1 lần vào Form và Gửi.</li>
             </ol>
           </div>
         </div>
         <ul style="margin:6px 0 0;padding-left:18px;color:var(--text-muted);font-size:12.5px;">
-          <li>Bấm <strong>"Xem chi tiết"</strong> để xem ảnh &amp; thông số gốc trên CellphoneS; tìm kiếm không cần gõ dấu.</li>
+          <li>Bấm <strong>"Xem chi tiết"</strong> để xem ảnh &amp; thông số trên CellphoneS, hoặc bấm <strong>"Video Review"</strong> để xem video đánh giá trên YouTube; tìm kiếm không cần gõ dấu.</li>
           <li>Chưa thấy món ưng ý? Bấm <strong>"+ Đề xuất sản phẩm khác"</strong> ở góc trên bên phải.</li>
           <li><strong>Gửi Email cho IT:</strong> Nội dung email đã được soạn sẵn, bạn chỉ cần điền thông tin cá nhân <em>(chỉ nên dùng nếu món không có trong danh sách hoặc bạn đang dùng điện thoại)</em>.</li>
         </ul>
@@ -910,6 +913,11 @@
       }));
 
       const fmtVND = (n) => (n > 0 ? Number(n).toLocaleString("vi-VN") + "đ" : "Liên hệ");
+      const ytReviewUrl = (name) => {
+        const clean = String(name || "").split("|")[0].trim();
+        return "https://www.youtube.com/results?search_query=" + encodeURIComponent("review " + clean);
+      };
+      const ytIconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="#dc2626" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>';
 
       const safeStorage = {
         get: (k, fb) => { try { return localStorage.getItem(k) ?? fb; } catch (e) { return fb; } },
@@ -923,7 +931,7 @@
         minPrice: "",
         maxPrice: "",
         hideZero: cfg.hideZeroPriceByDefault !== false,
-        sort: "default",
+        sort: "price_desc",
         view: "grid",
         limit: 60,
         shortlist: JSON.parse(safeStorage.get("cps_shortlist", "[]")).map((item) =>
@@ -1084,12 +1092,12 @@
             safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
             updateShortlistBadge();
             render();
-            showToast("Đã đưa vào mục đã lưu!");
+            showToast("Đã đưa vào giỏ hàng!");
           } else {
             existing.qty = qty;
             existing.color = color;
             safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
-            showToast("Đã cập nhật số lượng & màu sắc!");
+            showToast("Đã cập nhật số lượng & màu sắc trong giỏ hàng!");
           }
           document.getElementById("selectModal").classList.remove("open");
         };
@@ -1143,7 +1151,10 @@
                     <a class="btn" href="${p.url}" target="_blank" rel="noopener">Xem chi tiết</a>
                     <button class="btn btn-primary" data-pick="${p.id}">Chọn quà này</button>
                   </div>
-                  <button class="btn" style="width:100%;margin-top:8px;padding:7px;font-size:12px;${saved ? "background:var(--accent-soft);border-color:var(--accent);color:#1e40af;" : ""}" data-save="${p.id}">${saved ? "✓ Đã lưu trong giỏ quà" : "+ Lưu sản phẩm"}</button>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+                    <button class="btn" style="padding:7px 8px;font-size:12px;${saved ? "background:var(--accent-soft);border-color:var(--accent);color:#1e40af;" : ""}" data-save="${p.id}">${saved ? "✓ Trong giỏ hàng" : "+ Thêm vào giỏ"}</button>
+                    <a class="btn" style="padding:7px 8px;font-size:12px;" href="${ytReviewUrl(p.name)}" target="_blank" rel="noopener">${ytIconSvg} Video Review</a>
+                  </div>
                 </div>
               </article>
             `;
@@ -1159,7 +1170,10 @@
                 <td>${p.brand}</td>
                 <td style="font-weight:700;color:var(--primary);white-space:nowrap;">${fmtVND(p.salePrice)}</td>
                 <td>${p.discountPct > 0 ? "-" + Math.round(p.discountPct) + "%" : "-"}</td>
-                <td><button class="btn btn-primary" style="padding:5px 10px;font-size:12px;" data-pick="${p.id}">Chọn</button></td>
+                <td style="white-space:nowrap;">
+                  <button class="btn btn-primary" style="padding:5px 10px;font-size:12px;" data-pick="${p.id}">Chọn</button>
+                  <a class="btn" style="padding:5px 8px;font-size:12px;" href="${ytReviewUrl(p.name)}" target="_blank" rel="noopener" title="Xem video review YouTube">${ytIconSvg}</a>
+                </td>
               </tr>
             `).join("")}</tbody>
           </table></div>`;
@@ -1222,10 +1236,10 @@
 
       document.getElementById("resetFilters").onclick = () => {
         state.query = ""; state.category = "ALL"; state.brand = "";
-        state.minPrice = ""; state.maxPrice = ""; state.sort = "default";
+        state.minPrice = ""; state.maxPrice = ""; state.sort = "price_desc";
         el.search.value = ""; el.clearSearch.style.display = "none";
         el.brandSelect.value = ""; el.minPrice.value = ""; el.maxPrice.value = "";
-        el.sortSelect.value = "default";
+        el.sortSelect.value = "price_desc";
         document.querySelectorAll(".chip").forEach((x) => x.classList.remove("active"));
         renderCategories();
         render();
@@ -1294,7 +1308,7 @@
 
         const body = document.getElementById("shortlistBody");
         if (items.length === 0) {
-          body.innerHTML = "<p>Bạn chưa lưu sản phẩm nào.</p>";
+          body.innerHTML = "<p>Giỏ hàng của bạn đang trống.</p>";
           document.getElementById("shortlistModal").classList.add("open");
           return;
         }
