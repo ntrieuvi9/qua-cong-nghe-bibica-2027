@@ -585,7 +585,67 @@
     .notice-block ul, .notice-block ol { margin: 4px 0 0; padding-left: 18px; }
     .notice-block li { margin-bottom: 3px; }
 
-    .layout { grid-template-columns: 1fr; }
+    .mobile-cat-bar { display: none; }
+
+    @media (max-width: 900px) {
+      .topbar { position: relative; padding: 10px 14px; }
+      .topbar-inner { gap: 10px; }
+      .brand-wrap { flex: 1 1 auto; min-width: 0; }
+      .brand-title h1 { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .brand-title span { display: none; }
+      .search-box { order: 3; flex: 1 1 100%; max-width: 100%; }
+      .search-box input, input, select { font-size: 16px !important; }
+      .topbar-actions {
+        order: 4;
+        width: 100%;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+      }
+      .topbar-actions::-webkit-scrollbar { display: none; }
+      .topbar-actions .btn { flex: 0 0 auto; padding: 8px 12px; font-size: 12.5px; min-height: 38px; }
+
+      .notice-banner { margin: 10px auto 0; padding: 0 12px; }
+      .notice-card { padding: 10px 14px; }
+      .notice-grid { grid-template-columns: 1fr; }
+
+      .mobile-cat-bar {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 10px 12px 2px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .mobile-cat-bar::-webkit-scrollbar { display: none; }
+      .mcat-pill {
+        flex: 0 0 auto;
+        padding: 7px 13px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .mcat-pill.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+      }
+
+      .layout { grid-template-columns: 1fr; margin: 10px auto; padding: 0 12px 32px; gap: 12px; }
+      .toolbar { padding: 10px 12px; gap: 8px; }
+      .toolbar-right { width: 100%; justify-content: space-between; }
+      .toolbar-right select { flex: 1; font-size: 13px !important; }
+      .grid { grid-template-columns: 1fr; gap: 12px; }
       .sidebar {
         display: none;
         position: fixed;
@@ -593,9 +653,21 @@
         z-index: 90;
         max-height: 100vh;
         border-radius: 0;
+        padding-bottom: 32px;
       }
       .sidebar.open { display: block; }
       .mobile-filter-btn { display: inline-flex; }
+
+      .modal-backdrop { padding: 0; align-items: flex-end; }
+      .modal {
+        border-radius: 18px 18px 0 0;
+        max-width: 100%;
+        max-height: 88vh;
+        padding: 18px 16px 24px;
+      }
+      .letter-paper { padding: 18px 16px; }
+      .letter-greeting { font-size: 18px; }
+      .letter-content { font-size: 14px; }
     }
   </style>
 </head>
@@ -675,6 +747,8 @@
       </div>
     </div>
   </section>
+
+  <div id="mobileCatBar" class="mobile-cat-bar" aria-label="Danh mục nhanh"></div>
 
   <main class="layout">
     <aside id="sidebar" class="sidebar">
@@ -992,6 +1066,23 @@
             el.sidebar.classList.remove("open");
           };
         });
+
+        const mbar = document.getElementById("mobileCatBar");
+        if (mbar) {
+          const mAll = `<button class="mcat-pill ${state.category === "ALL" ? "active" : ""}" data-cat="ALL">Tất cả (${products.length.toLocaleString("vi-VN")})</button>`;
+          const mItems = sortedCats
+            .map(([c, cnt]) => `<button class="mcat-pill ${state.category === c ? "active" : ""}" data-cat="${c.replace(/"/g, "&quot;")}">${c} (${cnt})</button>`)
+            .join("");
+          mbar.innerHTML = mAll + mItems;
+          mbar.querySelectorAll(".mcat-pill").forEach((b) => {
+            b.onclick = () => {
+              state.category = b.dataset.cat;
+              state.limit = 60;
+              renderCategories();
+              render();
+            };
+          });
+        }
       }
 
       [...brands].sort().forEach((b) => {
@@ -1478,8 +1569,12 @@
         const body = document.getElementById("noticeBody");
         const hidden = body.style.display === "none";
         body.style.display = hidden ? "grid" : "none";
-        e.currentTarget.textContent = hidden ? "Thu gọn" : "Mở rộng";
+        e.currentTarget.textContent = hidden ? "Thu gọn" : "Xem hướng dẫn";
       };
+      if (window.innerWidth <= 900) {
+        document.getElementById("noticeBody").style.display = "none";
+        document.getElementById("toggleNoticeBtn").textContent = "Xem hướng dẫn";
+      }
 
       if (!safeSession.get("cps_letter_seen", "")) {
         openLetterModal();
