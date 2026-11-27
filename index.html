@@ -720,9 +720,15 @@
           <input id="customQty" type="number" min="1" max="99" value="1" />
         </div>
       </div>
-      <div class="filter-group" style="border-top:none;padding-top:4px;">
-        <label for="customUrl">Link nơi bán / Nhà cung cấp</label>
-        <input id="customUrl" type="text" placeholder="https://..." style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;" />
+      <div class="filter-group" style="border-top:none;padding-top:4px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <label for="customUrl">Link nơi bán / Nhà cung cấp</label>
+          <input id="customUrl" type="text" placeholder="https://..." style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;" />
+        </div>
+        <div>
+          <label for="customColor">Màu sắc (tùy chọn)</label>
+          <input id="customColor" type="text" placeholder="Ví dụ: Đen, Bạc..." style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;" />
+        </div>
       </div>
       <div class="modal-actions">
         <button id="customSubmitForm" class="btn btn-primary">Xác nhận mua và gửi qua form.</button>
@@ -848,7 +854,9 @@
         view: "grid",
         limit: 60,
         shortlist: JSON.parse(safeStorage.get("cps_shortlist", "[]")).map((item) =>
-          typeof item === "number" ? { id: item, qty: 1 } : { id: Number(item.id), qty: Math.max(1, Number(item.qty) || 1) }
+          typeof item === "number"
+            ? { id: item, qty: 1, color: "" }
+            : { id: Number(item.id), qty: Math.max(1, Number(item.qty) || 1), color: String(item.color || "") }
         ),
       };
 
@@ -935,15 +943,19 @@
       }
 
       function openSelectModal(p) {
-        const buildPayload = (qty) => {
+        const savedItem = state.shortlist.find((x) => x.id === p.id);
+        const buildPayload = (qty, color) => {
           const q = Math.max(1, Math.min(99, Number(qty) || 1));
+          const c = String(color || "").trim();
           const namePart = q > 1 ? `${p.name} (SL: ${q})` : p.name;
           const pricePart = q > 1 && p.salePrice > 0
             ? `${fmtVND(p.salePrice)} (Tổng: ${fmtVND(p.salePrice * q)})`
             : fmtVND(p.salePrice);
+          const colorSuffix = c ? ` | Màu: ${c}` : "";
           return {
             q,
-            copyText: `[ID: ${p.id}] | SKU: ${p.sku} | ${namePart} | Giá: ${pricePart} | ${p.url}`,
+            c,
+            copyText: `[ID: ${p.id}] | SKU: ${p.sku} | ${namePart} | Giá: ${pricePart} | ${p.url}${colorSuffix}`,
             pricePart,
           };
         };
@@ -951,26 +963,33 @@
         document.getElementById("modalBody").innerHTML = `
           <div><strong>${p.name}</strong></div>
           <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">Danh mục: ${p.category} · Thương hiệu: ${p.brand}</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px;flex-wrap:wrap;">
             <div style="font-size:18px;font-weight:700;color:var(--primary);">${fmtVND(p.salePrice)}</div>
-            <label style="font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;">
-              Số lượng:
-              <input id="pickQty" type="number" min="1" max="99" value="1" style="width:68px;padding:5px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;text-align:center;" />
-            </label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <label style="font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;">
+                Màu sắc:
+                <input id="pickColor" type="text" value="${(savedItem?.color || "").replace(/"/g, "&quot;")}" placeholder="VD: Đen, Bạc..." style="width:110px;padding:5px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;" />
+              </label>
+              <label style="font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;">
+                Số lượng:
+                <input id="pickQty" type="number" min="1" max="99" value="${savedItem?.qty || 1}" style="width:62px;padding:5px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;text-align:center;" />
+              </label>
+            </div>
           </div>
           <div class="summary-box" id="copyPayload"></div>
         `;
 
         const syncQty = () => {
-          const d = buildPayload(document.getElementById("pickQty").value);
+          const d = buildPayload(document.getElementById("pickQty").value, document.getElementById("pickColor").value);
           document.getElementById("copyPayload").textContent = d.copyText;
           const subject = encodeURIComponent(`[Đăng ký quà công nghệ] ${p.name} x${d.q} (ID: ${p.id})`);
-          const body = encodeURIComponent(`Kính gửi bộ phận IT,\n\nTôi đăng ký chọn sản phẩm quà công nghệ sau:\n- Product ID: ${p.id}\n- SKU: ${p.sku}\n- Tên sản phẩm: ${p.name}\n- Số lượng: ${d.q}\n- Giá bán tham khảo: ${d.pricePart}\n- Link: ${p.url}\n\nHọ và tên:\nMã nhân viên:\nPhòng ban:\n`);
+          const body = encodeURIComponent(`Kính gửi bộ phận IT,\n\nTôi đăng ký chọn sản phẩm quà công nghệ sau:\n- Product ID: ${p.id}\n- SKU: ${p.sku}\n- Tên sản phẩm: ${p.name}\n- Màu sắc: ${d.c || "Theo mặc định"}\n- Số lượng: ${d.q}\n- Giá bán tham khảo: ${d.pricePart}\n- Link: ${p.url}\n\nHọ và tên:\nMã nhân viên:\nPhòng ban:\n`);
           document.getElementById("outlookBtn").href = `mailto:${cfg.itEmail || ""}?subject=${subject}&body=${body}`;
           return d.copyText;
         };
         syncQty();
         document.getElementById("pickQty").oninput = syncQty;
+        document.getElementById("pickColor").oninput = syncQty;
 
         document.getElementById("copyAndOpenForm").onclick = async () => {
           const text = syncQty();
@@ -985,27 +1004,29 @@
         };
         document.getElementById("saveFromModalBtn").onclick = () => {
           const qty = Math.max(1, Math.min(99, Number(document.getElementById("pickQty").value) || 1));
+          const color = document.getElementById("pickColor").value.trim();
           const existing = state.shortlist.find((x) => x.id === p.id);
           if (!existing) {
-            state.shortlist.push({ id: p.id, qty });
+            state.shortlist.push({ id: p.id, qty, color });
             safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
             updateShortlistBadge();
             render();
             showToast("Đã đưa vào mục đã lưu!");
           } else {
             existing.qty = qty;
+            existing.color = color;
             safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
-            showToast("Đã cập nhật số lượng trong mục đã lưu!");
+            showToast("Đã cập nhật số lượng & màu sắc!");
           }
           document.getElementById("selectModal").classList.remove("open");
         };
         document.getElementById("selectModal").classList.add("open");
       }
 
-      function toggleShortlist(id, qty = 1) {
+      function toggleShortlist(id, qty = 1, color = "") {
         const idx = state.shortlist.findIndex((x) => x.id === id);
         if (idx >= 0) state.shortlist.splice(idx, 1);
-        else state.shortlist.push({ id, qty: Math.max(1, Number(qty) || 1) });
+        else state.shortlist.push({ id, qty: Math.max(1, Number(qty) || 1), color });
         safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
         updateShortlistBadge();
         render();
@@ -1157,12 +1178,15 @@
           : "Theo báo giá";
         const namePart = qty > 1 ? `${name} (SL: ${qty})` : name;
         const url = document.getElementById("customUrl").value.trim() || "Mua ngoài danh mục";
+        const color = document.getElementById("customColor").value.trim();
+        const colorSuffix = color ? ` | Màu: ${color}` : "";
         return {
           name: namePart,
           qty,
+          color,
           priceStr,
           url,
-          copyText: `[ID: NGOAI-DM] | SKU: KHAC | ${namePart} | Giá: ${priceStr} | ${url}`,
+          copyText: `[ID: NGOAI-DM] | SKU: KHAC | ${namePart} | Giá: ${priceStr} | ${url}${colorSuffix}`,
         };
       }
 
@@ -1191,7 +1215,7 @@
         const items = state.shortlist
           .map((s) => {
             const p = products.find((x) => x.id === s.id);
-            return p ? { p, qty: Math.max(1, Number(s.qty) || 1) } : null;
+            return p ? { p, qty: Math.max(1, Number(s.qty) || 1), color: String(s.color || "") } : null;
           })
           .filter(Boolean);
 
@@ -1204,25 +1228,27 @@
 
         const totalAmount = items.reduce((sum, x) => sum + (x.p.salePrice > 0 ? x.p.salePrice * x.qty : 0), 0);
         const buildAllPayload = () => {
-          const lines = items.map(({ p, qty }) => {
+          const lines = items.map(({ p, qty, color }) => {
             const namePart = qty > 1 ? `${p.name} (SL: ${qty})` : p.name;
             const pricePart = qty > 1 && p.salePrice > 0
               ? `${fmtVND(p.salePrice)} (Tổng: ${fmtVND(p.salePrice * qty)})`
               : fmtVND(p.salePrice);
-            return `[ID: ${p.id}] | SKU: ${p.sku} | ${namePart} | Giá: ${pricePart} | ${p.url}`;
+            const colorSuffix = color.trim() ? ` | Màu: ${color.trim()}` : "";
+            return `[ID: ${p.id}] | SKU: ${p.sku} | ${namePart} | Giá: ${pricePart} | ${p.url}${colorSuffix}`;
           });
           return lines.join("\n");
         };
 
         body.innerHTML = `
-          ${items.map(({ p, qty }) => `
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);">
-              <div style="min-width:0;flex:1;">
+          ${items.map(({ p, qty, color }) => `
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;">
+              <div style="min-width:160px;flex:1;">
                 <div style="font-weight:600;font-size:13px;">${p.name}</div>
                 <div style="font-size:12px;color:var(--primary);font-weight:700;">${fmtVND(p.salePrice)}</div>
               </div>
               <div style="display:flex;gap:6px;align-items:center;">
-                <input type="number" min="1" max="99" value="${qty}" data-qty-saved="${p.id}" style="width:54px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;font-size:12px;text-align:center;" title="Số lượng" />
+                <input type="text" value="${color.replace(/"/g, "&quot;")}" placeholder="Màu sắc" data-color-saved="${p.id}" style="width:82px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;font-size:12px;" title="Màu sắc" />
+                <input type="number" min="1" max="99" value="${qty}" data-qty-saved="${p.id}" style="width:50px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;font-size:12px;text-align:center;" title="Số lượng" />
                 <button class="btn btn-primary" style="padding:5px 9px;font-size:12px;" data-pick-saved="${p.id}">Chọn</button>
                 <button class="btn" style="padding:5px 8px;font-size:12px;" data-rm-saved="${p.id}">Xóa</button>
               </div>
@@ -1239,6 +1265,16 @@
           </div>
         `;
 
+        body.querySelectorAll("[data-color-saved]").forEach((inp) => {
+          inp.onchange = () => {
+            const id = Number(inp.dataset.colorSaved);
+            const target = state.shortlist.find((x) => x.id === id);
+            if (target) {
+              target.color = inp.value.trim();
+              safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
+            }
+          };
+        });
         body.querySelectorAll("[data-qty-saved]").forEach((inp) => {
           inp.onchange = () => {
             const id = Number(inp.dataset.qtySaved);
