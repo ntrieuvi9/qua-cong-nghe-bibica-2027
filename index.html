@@ -119,6 +119,39 @@
       font-weight: 700;
     }
 
+    .notice-banner {
+      max-width: 1400px;
+      margin: 14px auto 0;
+      padding: 0 20px;
+    }
+    .notice-card {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 4px solid #d97706;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #78350f;
+      box-shadow: var(--shadow-sm);
+    }
+    .notice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #92400e;
+    }
+    .notice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .notice-block ul, .notice-block ol { margin: 4px 0 0; padding-left: 18px; }
+    .notice-block li { margin-bottom: 3px; }
+
     .layout {
       max-width: 1400px;
       margin: 20px auto;
@@ -342,7 +375,40 @@
     .mobile-filter-btn { display: none; }
 
     @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
+      .notice-banner {
+      max-width: 1400px;
+      margin: 14px auto 0;
+      padding: 0 20px;
+    }
+    .notice-card {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 4px solid #d97706;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #78350f;
+      box-shadow: var(--shadow-sm);
+    }
+    .notice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #92400e;
+    }
+    .notice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .notice-block ul, .notice-block ol { margin: 4px 0 0; padding-left: 18px; }
+    .notice-block li { margin-bottom: 3px; }
+
+    .layout { grid-template-columns: 1fr; }
       .sidebar {
         display: none;
         position: fixed;
@@ -369,11 +435,47 @@
       </div>
       <div class="topbar-actions">
         <button id="mobileFilterBtn" class="btn mobile-filter-btn">Bộ lọc</button>
+        <button id="guideBtn" class="btn">Hướng dẫn</button>
         <button id="customProductBtn" class="btn btn-accent">+ Đề xuất sản phẩm khác</button>
         <button id="shortlistBtn" class="btn">Đã lưu <span id="shortlistCount" class="badge-count">0</span></button>
       </div>
     </div>
   </header>
+
+  <section class="notice-banner">
+    <div class="notice-card">
+      <div class="notice-header">
+        <span>Lưu ý quan trọng &amp; Hướng dẫn chọn quà công nghệ</span>
+        <button id="toggleNoticeBtn" class="btn" style="padding:4px 10px;font-size:12px;">Thu gọn</button>
+      </div>
+      <div id="noticeBody" class="notice-grid">
+        <div class="notice-block">
+          <strong>1. Lưu ý về giá &amp; Nhà cung cấp:</strong>
+          <ul>
+            <li>Giá hiển thị chỉ là <strong>giá tham khảo</strong> tại thời điểm đang xem (nguồn tham khảo: <strong>CellphoneS</strong>).</li>
+            <li>Bộ phận IT sẽ tham khảo giá ở <strong>nhiều nhà cung cấp</strong> để có mức giá tối ưu nhất cho CBNV sau khi thống nhất sản phẩm.</li>
+          </ul>
+        </div>
+        <div class="notice-block">
+          <strong>2. CBNV vui lòng đọc kỹ:</strong>
+          <ul>
+            <li>Bấm <strong>"Xem chi tiết"</strong> để kiểm tra kỹ cấu hình, kích thước, màu sắc trước khi chọn.</li>
+            <li>Mỗi CBNV chọn <strong>01 sản phẩm</strong> chính thức qua Microsoft Form.</li>
+            <li>Nếu món muốn chọn không có trong danh sách, bấm <strong>"+ Đề xuất sản phẩm khác"</strong>.</li>
+          </ul>
+        </div>
+        <div class="notice-block">
+          <strong>3. Hướng dẫn sử dụng nhanh:</strong>
+          <ol>
+            <li>Gõ tên/hãng (không cần dấu) hoặc lọc theo <strong>Danh mục / Khoảng giá</strong>.</li>
+            <li>Bấm <strong>"+ Lưu sản phẩm"</strong> để giữ lại xem sau, hoặc bấm <strong>"Chọn quà này"</strong>.</li>
+            <li>Bấm <strong>"Xác nhận mua và gửi qua form."</strong> &rarr; Dán (<strong>Ctrl+V</strong>) vào Form, điền Họ tên/Mã NV và Gửi.</li>
+            <li><strong>Gửi qua Email cho IT:</strong> Nội dung email được hệ thống soạn sẵn, bạn chỉ cần điền thông tin cá nhân. <em>(Chỉ nên dùng khi sản phẩm không có trong danh sách hoặc đang dùng điện thoại).</em></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <main class="layout">
     <aside id="sidebar" class="sidebar">
@@ -493,6 +595,37 @@
         <button id="closeShortlistModal" class="close-btn">&times;</button>
       </div>
       <div id="shortlistBody"></div>
+    </div>
+  </div>
+
+  <!-- Modal Hướng dẫn bắt buộc -->
+  <div id="guideModal" class="modal-backdrop">
+    <div class="modal" style="max-width:640px;">
+      <div class="modal-header">
+        <h3>Hướng dẫn &amp; Lưu ý quan trọng trước khi chọn quà</h3>
+        <button id="closeGuideModal" class="close-btn">&times;</button>
+      </div>
+      <div class="summary-box" style="background:#fffbeb;border-color:#fde68a;color:#78350f;">
+        <strong>Lưu ý về giá:</strong> Giá hiển thị trên trang chỉ là <strong>giá tham khảo tại thời điểm đang xem</strong> (nguồn tham khảo: <strong>CellphoneS</strong>). Sau khi CBNV thống nhất sản phẩm, bộ phận IT sẽ tham khảo giá tại <strong>nhiều nhà cung cấp</strong> để có mức giá tối ưu nhất cho CBNV.
+      </div>
+      <div style="font-size:13px;line-height:1.6;">
+        <p style="margin:8px 0 4px;"><strong>CBNV vui lòng đọc kỹ các lưu ý sau:</strong></p>
+        <ul style="margin:0 0 10px;padding-left:18px;">
+          <li>Kiểm tra kỹ thông số kỹ thuật, dung lượng, màu sắc qua nút <strong>"Xem chi tiết"</strong> trước khi chốt lựa chọn.</li>
+          <li>Mỗi CBNV vui lòng gửi <strong>01 lựa chọn chính thức</strong> qua Microsoft Form để IT tổng hợp đặt hàng.</li>
+          <li>Nếu sản phẩm mong muốn không có trong danh mục, sử dụng nút <strong>"+ Đề xuất sản phẩm khác"</strong> ở góc trên bên phải.</li>
+        </ul>
+        <p style="margin:8px 0 4px;"><strong>Hướng dẫn sử dụng:</strong></p>
+        <ol style="margin:0;padding-left:18px;">
+          <li>Tìm kiếm theo tên/hãng (hỗ trợ gõ không dấu) hoặc lọc theo <strong>Danh mục</strong>, <strong>Thương hiệu</strong>, <strong>Khoảng giá</strong>.</li>
+          <li>Bấm <strong>"+ Lưu sản phẩm"</strong> nếu muốn giữ lại xem sau ở mục <strong>Đã lưu</strong>, hoặc bấm <strong>"Chọn quà này"</strong> khi đã quyết định.</li>
+          <li>Bấm <strong>"Xác nhận mua và gửi qua form."</strong> &rarr; hệ thống tự copy thông tin sản phẩm và mở Microsoft Form, bạn chỉ cần dán (<strong>Ctrl+V</strong>) vào ô Sản phẩm, điền Họ tên / Mã NV / Phòng ban rồi bấm Gửi.</li>
+          <li><strong>Gửi qua Email cho IT:</strong> Phần nội dung email đã được hệ thống soạn sẵn tự động, bạn chỉ cần điền thêm thông tin cá nhân (Họ tên, Mã NV, Phòng ban). <em>Lưu ý: Chỉ nên dùng cách gửi email nếu sản phẩm không có trong danh sách mong muốn hoặc bạn đang thao tác trên điện thoại.</em></li>
+        </ol>
+      </div>
+      <div class="modal-actions">
+        <button id="ackGuideBtn" class="btn btn-primary">Tôi đã đọc &amp; Bắt đầu chọn quà</button>
+      </div>
     </div>
   </div>
 
@@ -876,6 +1009,29 @@
         }
         document.getElementById("shortlistModal").classList.add("open");
       };
+
+      const safeSession = {
+        get: (k, fb) => { try { return sessionStorage.getItem(k) ?? fb; } catch (e) { return fb; } },
+        set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) {} },
+      };
+
+      document.getElementById("guideBtn").onclick = () => document.getElementById("guideModal").classList.add("open");
+      const dismissGuide = () => {
+        safeSession.set("cps_guide_seen", "1");
+        document.getElementById("guideModal").classList.remove("open");
+      };
+      document.getElementById("closeGuideModal").onclick = dismissGuide;
+      document.getElementById("ackGuideBtn").onclick = dismissGuide;
+      document.getElementById("toggleNoticeBtn").onclick = (e) => {
+        const body = document.getElementById("noticeBody");
+        const hidden = body.style.display === "none";
+        body.style.display = hidden ? "grid" : "none";
+        e.currentTarget.textContent = hidden ? "Thu gọn" : "Mở rộng";
+      };
+
+      if (!safeSession.get("cps_guide_seen", "")) {
+        document.getElementById("guideModal").classList.add("open");
+      }
 
       renderCategories();
       updateShortlistBadge();
