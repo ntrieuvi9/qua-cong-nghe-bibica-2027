@@ -460,7 +460,7 @@
           <strong>2. CBNV vui lòng đọc kỹ:</strong>
           <ul>
             <li>Bấm <strong>"Xem chi tiết"</strong> để kiểm tra kỹ cấu hình, kích thước, màu sắc trước khi chọn.</li>
-            <li>Mỗi CBNV chọn <strong>01 sản phẩm</strong> chính thức qua Microsoft Form.</li>
+            <li>Mỗi CBNV có thể chọn <strong>01 sản phẩm</strong> chính thức qua Microsoft Form. Nếu chọn <strong>nhiều cái giống nhau</strong>, chỉnh <strong>Số lượng</strong>; nếu chọn <strong>nhiều món khác nhau</strong>, gửi Form lần lượt từng món.</li>
             <li>Nếu món muốn chọn không có trong danh sách, bấm <strong>"+ Đề xuất sản phẩm khác"</strong>.</li>
           </ul>
         </div>
@@ -571,9 +571,15 @@
         <label for="customName">Tên sản phẩm *</label>
         <input id="customName" type="text" placeholder="Ví dụ: Chuột Logitech MX Master 3S..." style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;" />
       </div>
-      <div class="filter-group" style="border-top:none;padding-top:4px;">
-        <label for="customPrice">Giá tham khảo (VND)</label>
-        <input id="customPrice" type="number" min="0" step="1000" placeholder="Ví dụ: 2490000" />
+      <div class="filter-group" style="border-top:none;padding-top:4px;display:grid;grid-template-columns:2fr 1fr;gap:8px;">
+        <div>
+          <label for="customPrice">Giá tham khảo (VND)</label>
+          <input id="customPrice" type="number" min="0" step="1000" placeholder="Ví dụ: 2490000" />
+        </div>
+        <div>
+          <label for="customQty">Số lượng</label>
+          <input id="customQty" type="number" min="1" max="99" value="1" />
+        </div>
       </div>
       <div class="filter-group" style="border-top:none;padding-top:4px;">
         <label for="customUrl">Link nơi bán / Nhà cung cấp</label>
@@ -612,7 +618,7 @@
         <p style="margin:8px 0 4px;"><strong>CBNV vui lòng đọc kỹ các lưu ý sau:</strong></p>
         <ul style="margin:0 0 10px;padding-left:18px;">
           <li>Kiểm tra kỹ thông số kỹ thuật, dung lượng, màu sắc qua nút <strong>"Xem chi tiết"</strong> trước khi chốt lựa chọn.</li>
-          <li>Mỗi CBNV vui lòng gửi <strong>01 lựa chọn chính thức</strong> qua Microsoft Form để IT tổng hợp đặt hàng.</li>
+          <li>Mỗi CBNV vui lòng gửi lựa chọn qua Microsoft Form để IT tổng hợp đặt hàng (nếu chọn <strong>nhiều cái giống nhau</strong>: chỉnh ô <strong>Số lượng</strong>; nếu chọn <strong>nhiều món khác nhau</strong>: gửi Form lần lượt từng món).</li>
           <li>Nếu sản phẩm mong muốn không có trong danh mục, sử dụng nút <strong>"+ Đề xuất sản phẩm khác"</strong> ở góc trên bên phải.</li>
         </ul>
         <p style="margin:8px 0 4px;"><strong>Hướng dẫn sử dụng:</strong></p>
@@ -763,25 +769,54 @@
       }
 
       function openSelectModal(p) {
-        const copyText = `[ID: ${p.id}] | SKU: ${p.sku} | ${p.name} | Giá: ${fmtVND(p.salePrice)} | ${p.url}`;
+        const buildPayload = (qty) => {
+          const q = Math.max(1, Math.min(99, Number(qty) || 1));
+          const namePart = q > 1 ? `${p.name} (SL: ${q})` : p.name;
+          const pricePart = q > 1 && p.salePrice > 0
+            ? `${fmtVND(p.salePrice)} (Tổng: ${fmtVND(p.salePrice * q)})`
+            : fmtVND(p.salePrice);
+          return {
+            q,
+            copyText: `[ID: ${p.id}] | SKU: ${p.sku} | ${namePart} | Giá: ${pricePart} | ${p.url}`,
+            pricePart,
+          };
+        };
+
         document.getElementById("modalBody").innerHTML = `
           <div><strong>${p.name}</strong></div>
           <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">Danh mục: ${p.category} · Thương hiệu: ${p.brand}</div>
-          <div style="font-size:18px;font-weight:700;color:var(--primary);margin-top:6px;">${fmtVND(p.salePrice)}</div>
-          <div class="summary-box" id="copyPayload">${copyText}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;flex-wrap:wrap;">
+            <div style="font-size:18px;font-weight:700;color:var(--primary);">${fmtVND(p.salePrice)}</div>
+            <label style="font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;">
+              Số lượng:
+              <input id="pickQty" type="number" min="1" max="99" value="1" style="width:68px;padding:5px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;text-align:center;" />
+            </label>
+          </div>
+          <div class="summary-box" id="copyPayload"></div>
         `;
+
+        const syncQty = () => {
+          const d = buildPayload(document.getElementById("pickQty").value);
+          document.getElementById("copyPayload").textContent = d.copyText;
+          const subject = encodeURIComponent(`[Đăng ký quà công nghệ] ${p.name} x${d.q} (ID: ${p.id})`);
+          const body = encodeURIComponent(`Kính gửi bộ phận IT,\n\nTôi đăng ký chọn sản phẩm quà công nghệ sau:\n- Product ID: ${p.id}\n- SKU: ${p.sku}\n- Tên sản phẩm: ${p.name}\n- Số lượng: ${d.q}\n- Giá bán tham khảo: ${d.pricePart}\n- Link: ${p.url}\n\nHọ và tên:\nMã nhân viên:\nPhòng ban:\n`);
+          document.getElementById("outlookBtn").href = `mailto:${cfg.itEmail || ""}?subject=${subject}&body=${body}`;
+          return d.copyText;
+        };
+        syncQty();
+        document.getElementById("pickQty").oninput = syncQty;
+
         document.getElementById("copyAndOpenForm").onclick = async () => {
-          try { await navigator.clipboard.writeText(copyText); } catch (e) {}
+          const text = syncQty();
+          try { await navigator.clipboard.writeText(text); } catch (e) {}
           showToast("Đã copy thông tin! Hãy dán (Ctrl+V) vào Microsoft Form.");
           window.open(cfg.msFormUrl || "https://forms.office.com/", "_blank", "noopener");
         };
         document.getElementById("copyOnlyBtn").onclick = async () => {
-          try { await navigator.clipboard.writeText(copyText); showToast("Đã copy thông tin sản phẩm!"); }
+          const text = syncQty();
+          try { await navigator.clipboard.writeText(text); showToast("Đã copy thông tin sản phẩm!"); }
           catch (e) { showToast("Hãy bôi đen và copy thủ công."); }
         };
-        const subject = encodeURIComponent(`[Đăng ký quà công nghệ] ${p.name} (ID: ${p.id})`);
-        const body = encodeURIComponent(`Kính gửi bộ phận IT,\n\nTôi đăng ký chọn sản phẩm quà công nghệ sau:\n- Product ID: ${p.id}\n- SKU: ${p.sku}\n- Tên sản phẩm: ${p.name}\n- Giá bán tham khảo: ${fmtVND(p.salePrice)}\n- Link: ${p.url}\n\nHọ và tên:\nMã nhân viên:\nPhòng ban:\n`);
-        document.getElementById("outlookBtn").href = `mailto:${cfg.itEmail || ""}?subject=${subject}&body=${body}`;
         document.getElementById("saveFromModalBtn").onclick = () => {
           if (!state.shortlist.includes(p.id)) {
             state.shortlist.push(p.id);
@@ -944,14 +979,19 @@
           showToast("Vui lòng nhập Tên sản phẩm!");
           return null;
         }
+        const qty = Math.max(1, Math.min(99, Number(document.getElementById("customQty").value) || 1));
         const priceNum = Number(document.getElementById("customPrice").value || 0);
-        const priceStr = priceNum > 0 ? Number(priceNum).toLocaleString("vi-VN") + "đ" : "Theo báo giá";
+        const priceStr = priceNum > 0
+          ? (qty > 1 ? `${Number(priceNum).toLocaleString("vi-VN")}đ (Tổng: ${Number(priceNum * qty).toLocaleString("vi-VN")}đ)` : `${Number(priceNum).toLocaleString("vi-VN")}đ`)
+          : "Theo báo giá";
+        const namePart = qty > 1 ? `${name} (SL: ${qty})` : name;
         const url = document.getElementById("customUrl").value.trim() || "Mua ngoài danh mục";
         return {
-          name,
+          name: namePart,
+          qty,
           priceStr,
           url,
-          copyText: `[ID: NGOAI-DM] | SKU: KHAC | ${name} | Giá: ${priceStr} | ${url}`,
+          copyText: `[ID: NGOAI-DM] | SKU: KHAC | ${namePart} | Giá: ${priceStr} | ${url}`,
         };
       }
 
