@@ -913,12 +913,26 @@
         </div>
         <div class="modal-actions" style="margin-top:18px;">
           <button id="openLetterBtn" class="btn btn-primary arrow-cta">
-            <span>Mời bạn xem hướng dẫn chọn quà</span>
+            <span>Tiếp tục</span>
             <span class="arrow-icon" aria-hidden="true">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </span>
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Hỏi Có/Không Gợi ý -->
+  <div id="askWizardModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="askWizardTitle">
+    <div class="modal" style="max-width:440px;text-align:center;">
+      <h3 id="askWizardTitle" style="margin:0 0 8px;font-size:18px;">Bạn có muốn xem gợi ý sản phẩm theo nhu cầu của bạn không?</h3>
+      <p style="font-size:13.5px;color:var(--text-muted);margin:0 0 16px;">
+        Chỉ mất 5 giây chọn nhóm sản phẩm &amp; mức giá, hệ thống sẽ lọc sẵn những món phù hợp nhất cho bạn.
+      </p>
+      <div class="modal-actions">
+        <button id="askYesBtn" class="btn btn-primary">Có, gợi ý cho tôi &rarr;</button>
+        <button id="askNoBtn" class="btn">Không, xem hướng dẫn và tự chọn</button>
       </div>
     </div>
   </div>
@@ -1606,11 +1620,20 @@
       }
 
       document.getElementById("letterBtn").onclick = openLetterModal;
+      document.getElementById("askYesBtn").onclick = () => {
+        document.getElementById("askWizardModal").classList.remove("open");
+        openWizardModal();
+      };
+      document.getElementById("askNoBtn").onclick = () => {
+        document.getElementById("askWizardModal").classList.remove("open");
+        document.getElementById("guideModal").classList.add("open");
+      };
+
       document.getElementById("openLetterBtn").onclick = () => {
         safeSession.set("cps_letter_seen", "1");
         document.getElementById("letterModal").classList.remove("open");
         document.getElementById("confettiCanvas").style.display = "none";
-        document.getElementById("guideModal").classList.add("open");
+        document.getElementById("askWizardModal").classList.add("open");
       };
 
       // Step-by-step Gift Finder Wizard
@@ -1698,9 +1721,16 @@
         showWizardStep(1);
         document.getElementById("wizardModal").classList.add("open");
       }
+      function closeWizardAndMaybeGuide() {
+        document.getElementById("wizardModal").classList.remove("open");
+        if (!safeSession.get("cps_guide_seen", "")) {
+          document.getElementById("guideModal").classList.add("open");
+        }
+      }
+
       document.getElementById("wizardBtn").onclick = openWizardModal;
-      document.getElementById("closeWizardModal").onclick = () => document.getElementById("wizardModal").classList.remove("open");
-      document.getElementById("skipWizardBtn").onclick = () => document.getElementById("wizardModal").classList.remove("open");
+      document.getElementById("closeWizardModal").onclick = closeWizardAndMaybeGuide;
+      document.getElementById("skipWizardBtn").onclick = closeWizardAndMaybeGuide;
       document.getElementById("applyWizardBtn").onclick = () => {
         state.category = wizState.category;
         state.minPrice = wizState.min;
@@ -1710,15 +1740,13 @@
         state.limit = 60;
         renderCategories();
         render();
-        document.getElementById("wizardModal").classList.remove("open");
+        closeWizardAndMaybeGuide();
       };
 
       document.getElementById("guideBtn").onclick = () => document.getElementById("guideModal").classList.add("open");
       const dismissGuide = () => {
-        const firstTime = !safeSession.get("cps_guide_seen", "");
         safeSession.set("cps_guide_seen", "1");
         document.getElementById("guideModal").classList.remove("open");
-        if (firstTime) openWizardModal();
       };
       document.getElementById("closeGuideModal").onclick = dismissGuide;
       document.getElementById("ackGuideBtn").onclick = dismissGuide;
