@@ -435,6 +435,7 @@
       </div>
       <div class="topbar-actions">
         <button id="mobileFilterBtn" class="btn mobile-filter-btn">Bộ lọc</button>
+        <button id="letterBtn" class="btn">Lá thư</button>
         <button id="guideBtn" class="btn">Hướng dẫn</button>
         <button id="customProductBtn" class="btn btn-accent">+ Đề xuất sản phẩm khác</button>
         <button id="shortlistBtn" class="btn">Đã lưu <span id="shortlistCount" class="badge-count">0</span></button>
@@ -460,7 +461,7 @@
           <strong>2. CBNV vui lòng đọc kỹ:</strong>
           <ul>
             <li>Bấm <strong>"Xem chi tiết"</strong> để kiểm tra kỹ cấu hình, kích thước, màu sắc trước khi chọn.</li>
-            <li>Mỗi CBNV có thể chọn <strong>01 sản phẩm</strong> chính thức qua Microsoft Form. Nếu chọn <strong>nhiều cái giống nhau</strong>, chỉnh <strong>Số lượng</strong>; nếu chọn <strong>nhiều món khác nhau</strong>, gửi Form lần lượt từng món.</li>
+            <li>CBNV có thể chọn <strong>nhiều sản phẩm</strong>: chỉnh <strong>Số lượng</strong> nếu mua nhiều cái giống nhau, hoặc bấm <strong>"+ Lưu sản phẩm"</strong> cho nhiều món khác nhau rồi vào mục <strong>Đã lưu</strong> để gửi chung 1 lần Form.</li>
             <li>Nếu món muốn chọn không có trong danh sách, bấm <strong>"+ Đề xuất sản phẩm khác"</strong>.</li>
           </ul>
         </div>
@@ -468,9 +469,9 @@
           <strong>3. Hướng dẫn sử dụng nhanh:</strong>
           <ol>
             <li>Gõ tên/hãng (không cần dấu) hoặc lọc theo <strong>Danh mục / Khoảng giá</strong>.</li>
-            <li>Bấm <strong>"+ Lưu sản phẩm"</strong> để giữ lại xem sau, hoặc bấm <strong>"Chọn quà này"</strong>.</li>
-            <li>Bấm <strong>"Xác nhận mua và gửi qua form."</strong> &rarr; Dán (<strong>Ctrl+V</strong>) vào Form, điền Họ tên/Mã NV và Gửi.</li>
-            <li><strong>Gửi qua Email cho IT:</strong> Nội dung email được hệ thống soạn sẵn, bạn chỉ cần điền thông tin cá nhân. <em>(Chỉ nên dùng khi sản phẩm không có trong danh sách hoặc đang dùng điện thoại).</em></li>
+            <li>Chọn 1 món: bấm <strong>"Chọn quà này"</strong> &rarr; chỉnh số lượng &rarr; bấm <strong>"Xác nhận mua và gửi qua form."</strong>.</li>
+            <li>Chọn nhiều món khác nhau: bấm <strong>"+ Lưu sản phẩm"</strong> cho từng món &rarr; mở mục <strong>Đã lưu</strong> &rarr; bấm <strong>"Xác nhận gửi TẤT CẢ qua Form"</strong> &rarr; Dán (<strong>Ctrl+V</strong>) vào Form, điền thông tin cá nhân và Gửi.</li>
+            <li><strong>Gửi qua Email cho IT:</strong> Nội dung email được hệ thống tự soạn sẵn, bạn chỉ cần điền thông tin cá nhân. <em>(Chỉ nên dùng khi sản phẩm không có trong danh sách mong muốn hoặc đang dùng điện thoại).</em></li>
           </ol>
         </div>
       </div>
@@ -604,6 +605,22 @@
     </div>
   </div>
 
+  <!-- Modal Lá thư chúc mừng -->
+  <div id="letterModal" class="modal-backdrop">
+    <div class="modal" style="max-width:560px;border-top:5px solid var(--primary);text-align:center;">
+      <div style="font-size:40px;line-height:1;margin-bottom:8px;">&#9993;&#65039;</div>
+      <h3 style="margin:0 0 10px;font-size:20px;color:var(--primary);">Thư Chúc Mừng Từ Công Ty</h3>
+      <div class="summary-box" style="text-align:left;background:#fff8f6;border-color:#fecaca;color:#1e293b;line-height:1.7;font-size:14px;">
+        <p style="margin:0 0 8px;"><strong>Chúc mừng bạn đã nhận được phần quà công nghệ tri ân từ Công ty!</strong></p>
+        <p style="margin:0 0 8px;">Nhằm ghi nhận những nỗ lực, đóng góp và sự đồng hành quý báu của bạn trong thời gian qua, Công ty đã chuẩn bị chương trình quà tặng công nghệ để bạn tự do lựa chọn sản phẩm phù hợp nhất với nhu cầu cá nhân và công việc.</p>
+        <p style="margin:0;">Chúc bạn thật nhiều sức khỏe, niềm vui và tiếp tục gặt hái nhiều thành công mới cùng Công ty!</p>
+      </div>
+      <div class="modal-actions">
+        <button id="openLetterBtn" class="btn btn-primary">Mở thư &amp; Xem hướng dẫn chọn quà</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal Hướng dẫn bắt buộc -->
   <div id="guideModal" class="modal-backdrop">
     <div class="modal" style="max-width:640px;">
@@ -618,15 +635,15 @@
         <p style="margin:8px 0 4px;"><strong>CBNV vui lòng đọc kỹ các lưu ý sau:</strong></p>
         <ul style="margin:0 0 10px;padding-left:18px;">
           <li>Kiểm tra kỹ thông số kỹ thuật, dung lượng, màu sắc qua nút <strong>"Xem chi tiết"</strong> trước khi chốt lựa chọn.</li>
-          <li>Mỗi CBNV vui lòng gửi lựa chọn qua Microsoft Form để IT tổng hợp đặt hàng (nếu chọn <strong>nhiều cái giống nhau</strong>: chỉnh ô <strong>Số lượng</strong>; nếu chọn <strong>nhiều món khác nhau</strong>: gửi Form lần lượt từng món).</li>
+          <li>CBNV có thể chọn <strong>nhiều sản phẩm</strong>: chỉnh ô <strong>Số lượng</strong> nếu muốn nhiều cái giống nhau, hoặc lưu nhiều món khác nhau vào mục <strong>Đã lưu</strong> để gửi chung trong <strong>01 lần Form</strong>.</li>
           <li>Nếu sản phẩm mong muốn không có trong danh mục, sử dụng nút <strong>"+ Đề xuất sản phẩm khác"</strong> ở góc trên bên phải.</li>
         </ul>
         <p style="margin:8px 0 4px;"><strong>Hướng dẫn sử dụng:</strong></p>
         <ol style="margin:0;padding-left:18px;">
           <li>Tìm kiếm theo tên/hãng (hỗ trợ gõ không dấu) hoặc lọc theo <strong>Danh mục</strong>, <strong>Thương hiệu</strong>, <strong>Khoảng giá</strong>.</li>
-          <li>Bấm <strong>"+ Lưu sản phẩm"</strong> nếu muốn giữ lại xem sau ở mục <strong>Đã lưu</strong>, hoặc bấm <strong>"Chọn quà này"</strong> khi đã quyết định.</li>
-          <li>Bấm <strong>"Xác nhận mua và gửi qua form."</strong> &rarr; hệ thống tự copy thông tin sản phẩm và mở Microsoft Form, bạn chỉ cần dán (<strong>Ctrl+V</strong>) vào ô Sản phẩm, điền Họ tên / Mã NV / Phòng ban rồi bấm Gửi.</li>
-          <li><strong>Gửi qua Email cho IT:</strong> Phần nội dung email đã được hệ thống soạn sẵn tự động, bạn chỉ cần điền thêm thông tin cá nhân (Họ tên, Mã NV, Phòng ban). <em>Lưu ý: Chỉ nên dùng cách gửi email nếu sản phẩm không có trong danh sách mong muốn hoặc bạn đang thao tác trên điện thoại.</em></li>
+          <li><strong>Chọn 1 món:</strong> Bấm <strong>"Chọn quà này"</strong> &rarr; chỉnh Số lượng &rarr; bấm <strong>"Xác nhận mua và gửi qua form."</strong> &rarr; dán (<strong>Ctrl+V</strong>) vào Form và Gửi.</li>
+          <li><strong>Chọn nhiều món khác nhau:</strong> Bấm <strong>"+ Lưu sản phẩm"</strong> cho từng món &rarr; mở mục <strong>Đã lưu</strong> (góc trên bên phải) &rarr; chỉnh số lượng từng món và bấm <strong>"Xác nhận gửi TẤT CẢ qua Form"</strong>.</li>
+          <li><strong>Gửi qua Email cho IT:</strong> Phần nội dung email đã được hệ thống tự soạn sẵn, bạn chỉ cần điền thêm thông tin cá nhân (Họ tên, Mã NV, Phòng ban). <em>Lưu ý: Chỉ nên dùng cách gửi email nếu sản phẩm không có trong danh sách mong muốn hoặc bạn đang thao tác trên điện thoại.</em></li>
         </ol>
       </div>
       <div class="modal-actions">
@@ -683,7 +700,9 @@
         sort: "default",
         view: "grid",
         limit: 60,
-        shortlist: JSON.parse(safeStorage.get("cps_shortlist", "[]")),
+        shortlist: JSON.parse(safeStorage.get("cps_shortlist", "[]")).map((item) =>
+          typeof item === "number" ? { id: item, qty: 1 } : { id: Number(item.id), qty: Math.max(1, Number(item.qty) || 1) }
+        ),
       };
 
       const el = {
@@ -818,31 +837,36 @@
           catch (e) { showToast("Hãy bôi đen và copy thủ công."); }
         };
         document.getElementById("saveFromModalBtn").onclick = () => {
-          if (!state.shortlist.includes(p.id)) {
-            state.shortlist.push(p.id);
+          const qty = Math.max(1, Math.min(99, Number(document.getElementById("pickQty").value) || 1));
+          const existing = state.shortlist.find((x) => x.id === p.id);
+          if (!existing) {
+            state.shortlist.push({ id: p.id, qty });
             safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
             updateShortlistBadge();
             render();
             showToast("Đã đưa vào mục đã lưu!");
           } else {
-            showToast("Sản phẩm đã có trong mục đã lưu!");
+            existing.qty = qty;
+            safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
+            showToast("Đã cập nhật số lượng trong mục đã lưu!");
           }
           document.getElementById("selectModal").classList.remove("open");
         };
         document.getElementById("selectModal").classList.add("open");
       }
 
-      function toggleShortlist(id) {
-        const idx = state.shortlist.indexOf(id);
+      function toggleShortlist(id, qty = 1) {
+        const idx = state.shortlist.findIndex((x) => x.id === id);
         if (idx >= 0) state.shortlist.splice(idx, 1);
-        else state.shortlist.push(id);
+        else state.shortlist.push({ id, qty: Math.max(1, Number(qty) || 1) });
         safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
         updateShortlistBadge();
         render();
       }
 
       function updateShortlistBadge() {
-        el.shortlistCount.textContent = state.shortlist.length;
+        const totalQty = state.shortlist.reduce((sum, x) => sum + (x.qty || 1), 0);
+        el.shortlistCount.textContent = totalQty;
       }
 
       function render() {
@@ -858,7 +882,7 @@
 
         if (state.view === "grid") {
           el.container.innerHTML = `<div class="grid">${visible.map((p) => {
-            const saved = state.shortlist.includes(p.id);
+            const saved = state.shortlist.some((x) => x.id === p.id);
             return `
               <article class="card">
                 <div>
@@ -1016,43 +1040,116 @@
         e.currentTarget.href = `mailto:${cfg.itEmail || ""}?subject=${subject}&body=${body}`;
       };
 
-      document.getElementById("shortlistBtn").onclick = () => {
-        const saved = products.filter((p) => state.shortlist.includes(p.id));
+      function renderShortlistModal() {
+        const items = state.shortlist
+          .map((s) => {
+            const p = products.find((x) => x.id === s.id);
+            return p ? { p, qty: Math.max(1, Number(s.qty) || 1) } : null;
+          })
+          .filter(Boolean);
+
         const body = document.getElementById("shortlistBody");
-        if (saved.length === 0) {
+        if (items.length === 0) {
           body.innerHTML = "<p>Bạn chưa lưu sản phẩm nào.</p>";
-        } else {
-          body.innerHTML = saved.map((p) => `
+          document.getElementById("shortlistModal").classList.add("open");
+          return;
+        }
+
+        const totalAmount = items.reduce((sum, x) => sum + (x.p.salePrice > 0 ? x.p.salePrice * x.qty : 0), 0);
+        const buildAllPayload = () => {
+          const lines = items.map(({ p, qty }) => {
+            const namePart = qty > 1 ? `${p.name} (SL: ${qty})` : p.name;
+            const pricePart = qty > 1 && p.salePrice > 0
+              ? `${fmtVND(p.salePrice)} (Tổng: ${fmtVND(p.salePrice * qty)})`
+              : fmtVND(p.salePrice);
+            return `[ID: ${p.id}] | SKU: ${p.sku} | ${namePart} | Giá: ${pricePart} | ${p.url}`;
+          });
+          return lines.join("\n");
+        };
+
+        body.innerHTML = `
+          ${items.map(({ p, qty }) => `
             <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);">
-              <div>
+              <div style="min-width:0;flex:1;">
                 <div style="font-weight:600;font-size:13px;">${p.name}</div>
                 <div style="font-size:12px;color:var(--primary);font-weight:700;">${fmtVND(p.salePrice)}</div>
               </div>
-              <div style="display:flex;gap:6px;">
-                <button class="btn btn-primary" style="padding:5px 10px;font-size:12px;" data-pick-saved="${p.id}">Chọn</button>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <input type="number" min="1" max="99" value="${qty}" data-qty-saved="${p.id}" style="width:54px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;font-size:12px;text-align:center;" title="Số lượng" />
+                <button class="btn btn-primary" style="padding:5px 9px;font-size:12px;" data-pick-saved="${p.id}">Chọn</button>
                 <button class="btn" style="padding:5px 8px;font-size:12px;" data-rm-saved="${p.id}">Xóa</button>
               </div>
             </div>
-          `).join("");
-          body.querySelectorAll("[data-pick-saved]").forEach((b) => {
-            b.onclick = () => {
-              document.getElementById("shortlistModal").classList.remove("open");
-              openSelectModal(products.find((x) => x.id === Number(b.dataset.pickSaved)));
-            };
-          });
-          body.querySelectorAll("[data-rm-saved]").forEach((b) => {
-            b.onclick = () => {
-              toggleShortlist(Number(b.dataset.rmSaved));
-              document.getElementById("shortlistBtn").click();
-            };
-          });
-        }
+          `).join("")}
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 6px;font-size:13px;">
+            <span>Tổng cộng (${items.length} loại):</span>
+            <strong style="font-size:16px;color:var(--primary);">${fmtVND(totalAmount)}</strong>
+          </div>
+          <div class="modal-actions">
+            <button id="sendAllFormBtn" class="btn btn-primary">Xác nhận gửi TẤT CẢ (${items.length} món) qua Form</button>
+            <button id="copyAllSavedBtn" class="btn">Chỉ copy TẤT CẢ thông tin. Chưa mua ngay</button>
+            <a id="emailAllSavedBtn" class="btn btn-accent" href="#">Gửi TẤT CẢ qua Email cho IT. Chưa mua ngay</a>
+          </div>
+        `;
+
+        body.querySelectorAll("[data-qty-saved]").forEach((inp) => {
+          inp.onchange = () => {
+            const id = Number(inp.dataset.qtySaved);
+            const target = state.shortlist.find((x) => x.id === id);
+            if (target) {
+              target.qty = Math.max(1, Math.min(99, Number(inp.value) || 1));
+              safeStorage.set("cps_shortlist", JSON.stringify(state.shortlist));
+              updateShortlistBadge();
+              renderShortlistModal();
+            }
+          };
+        });
+        body.querySelectorAll("[data-pick-saved]").forEach((b) => {
+          b.onclick = () => {
+            document.getElementById("shortlistModal").classList.remove("open");
+            openSelectModal(products.find((x) => x.id === Number(b.dataset.pickSaved)));
+          };
+        });
+        body.querySelectorAll("[data-rm-saved]").forEach((b) => {
+          b.onclick = () => {
+            toggleShortlist(Number(b.dataset.rmSaved));
+            renderShortlistModal();
+          };
+        });
+
+        document.getElementById("sendAllFormBtn").onclick = async () => {
+          const text = buildAllPayload();
+          try { await navigator.clipboard.writeText(text); } catch (e) {}
+          showToast(`Đã copy ${items.length} sản phẩm! Hãy dán (Ctrl+V) vào Microsoft Form.`);
+          window.open(cfg.msFormUrl || "https://forms.office.com/", "_blank", "noopener");
+        };
+        document.getElementById("copyAllSavedBtn").onclick = async () => {
+          const text = buildAllPayload();
+          try { await navigator.clipboard.writeText(text); showToast(`Đã copy ${items.length} sản phẩm!`); }
+          catch (e) { showToast("Không thể tự copy, hãy thử lại."); }
+        };
+        const emailLines = items.map(({ p, qty }, i) => `${i + 1}. [ID: ${p.id}] ${p.name} | SL: ${qty} | Giá: ${fmtVND(p.salePrice)} | ${p.url}`).join("\n");
+        const subj = encodeURIComponent(`[Đăng ký quà công nghệ] Danh sách ${items.length} sản phẩm`);
+        const mailBody = encodeURIComponent(`Kính gửi bộ phận IT,\n\nTôi đăng ký chọn các sản phẩm quà công nghệ sau:\n${emailLines}\n\nTổng giá tham khảo: ${fmtVND(totalAmount)}\n\nHọ và tên:\nMã nhân viên:\nPhòng ban:\n`);
+        document.getElementById("emailAllSavedBtn").href = `mailto:${cfg.itEmail || ""}?subject=${subj}&body=${mailBody}`;
+
         document.getElementById("shortlistModal").classList.add("open");
-      };
+      }
+
+      document.getElementById("shortlistBtn").onclick = renderShortlistModal;
 
       const safeSession = {
         get: (k, fb) => { try { return sessionStorage.getItem(k) ?? fb; } catch (e) { return fb; } },
         set: (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) {} },
+      };
+
+      document.getElementById("letterBtn").onclick = () => document.getElementById("letterModal").classList.add("open");
+      document.getElementById("openLetterBtn").onclick = () => {
+        safeSession.set("cps_letter_seen", "1");
+        document.getElementById("letterModal").classList.remove("open");
+        if (!safeSession.get("cps_guide_seen", "")) {
+          document.getElementById("guideModal").classList.add("open");
+        }
       };
 
       document.getElementById("guideBtn").onclick = () => document.getElementById("guideModal").classList.add("open");
@@ -1069,7 +1166,9 @@
         e.currentTarget.textContent = hidden ? "Thu gọn" : "Mở rộng";
       };
 
-      if (!safeSession.get("cps_guide_seen", "")) {
+      if (!safeSession.get("cps_letter_seen", "")) {
+        document.getElementById("letterModal").classList.add("open");
+      } else if (!safeSession.get("cps_guide_seen", "")) {
         document.getElementById("guideModal").classList.add("open");
       }
 
